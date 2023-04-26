@@ -2,6 +2,10 @@ package com.co.kr.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -46,13 +50,46 @@ public class CommonUtils {
 		return ip;
 	};
 	
-		// auth redirect
-		public static void redirect(String alertText, String redirectPath, HttpServletResponse response) throws IOException {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			ModelAndView mav = new ModelAndView();
-			// 개발용 리다이렉트
-			out.println("<script>alert('"+ alertText +"'); location.href='" + redirectPath + "'</script>");
-			out.flush();
-		}
+	//MAC 주소를 얻는 메소드
+	public static String getClientMACAddress(){ 
+		String result = "";
+        InetAddress ip;
+        
+        try {
+            ip = InetAddress.getLocalHost();
+            
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            byte[] mac = network.getHardwareAddress();
+            
+            String ipValue = ip.getHostAddress();
+            System.out.println("아이피 확인 : " + ipValue);
+
+            String hostName = ip.getHostName();
+            System.out.println("호스트 확인 : " + hostName);
+            
+            
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
+                result = sb.toString();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e){
+            e.printStackTrace();
+        }
+            
+        return result;
+	};
+	
+	// auth redirect
+	public static void redirect(String alertText, String redirectPath, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		ModelAndView mav = new ModelAndView();
+		// 개발용 리다이렉트
+		out.println("<script>alert('"+ alertText +"'); location.href='" + redirectPath + "'</script>");
+		out.flush();
+	}
+
 }

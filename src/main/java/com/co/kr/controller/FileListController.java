@@ -29,7 +29,6 @@ import com.co.kr.exception.RequestException;
 import com.co.kr.service.UploadService;
 import com.co.kr.vo.FileListVO;
 
-import groovy.transform.Field;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -77,12 +76,11 @@ public class FileListController {
 		return mav;
 	}
 	
-	// detail
+	//detail
 	@GetMapping("detail")
 	public ModelAndView bdDetail(@ModelAttribute("fileListVO") FileListVO fileListVO, @RequestParam("bdSeq") String bdSeq, HttpServletRequest request) throws IOException {
-		
 		ModelAndView mav = new ModelAndView();
-		// 하나의 파일 가져오기
+		//하나의 파일 가져오기
 		mav = bdSelectOneCall(fileListVO, bdSeq, request);
 		mav.setViewName("board/boardList.html");
 		return mav;
