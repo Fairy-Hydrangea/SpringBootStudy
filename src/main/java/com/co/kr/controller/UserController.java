@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.co.kr.domain.BoardListDomain;
 import com.co.kr.domain.LoginDomain;
+import com.co.kr.domain.MarketListDomain;
+import com.co.kr.service.MarketService;
 import com.co.kr.service.UploadService;
 import com.co.kr.service.UserService;
 import com.co.kr.util.CommonUtils;
@@ -39,6 +41,9 @@ public class UserController {
 	
 	@Autowired
 	private UploadService uploadService;
+	
+	@Autowired
+	private MarketService marketService;
 
 	@RequestMapping(value = "board")
 	public ModelAndView login(LoginVO loginDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -93,6 +98,17 @@ public class UserController {
 		System.out.println("items ==> "+ items);
 		mav.addObject("items", items);
 		mav.setViewName("board/boardList.html");
+		return mav; 
+	};
+	
+	// 좌측 메뉴로 갤러리 이동
+	@RequestMapping(value = "bdVideo")
+	public ModelAndView bdVideo() { 
+		ModelAndView mav = new ModelAndView();
+		List<BoardListDomain> items = uploadService.boardList();
+		System.out.println("items ==> "+ items);
+		mav.addObject("items", items);
+		mav.setViewName("board/boardVideo.html");
 		return mav; 
 	};
 	
@@ -350,4 +366,17 @@ public class UserController {
 		mav.setViewName("index.html");
 		return mav;
 	}
+	
+
+	@RequestMapping(value = "mkList")
+	public ModelAndView mkList() { 
+		ModelAndView mav = new ModelAndView();
+		List<MarketListDomain> items = marketService.marketList();
+		System.out.println("items ==> "+ items);
+		mav.addObject("items", items);
+		mav.setViewName("market/marketList.html");
+		return mav; 
+	};
+	
+	
 }
